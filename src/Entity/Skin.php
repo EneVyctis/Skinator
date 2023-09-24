@@ -16,6 +16,12 @@ class Skin
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\ManyToOne(inversedBy: 'skin')]
+    private ?Wardrobe $wardrobe = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $rarety = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -32,4 +38,29 @@ class Skin
 
         return $this;
     }
+
+    public function getWardrobe(): ?Wardrobe
+    {
+        return $this->wardrobe;
+    }
+
+    public function setWardrobe(?Wardrobe $wardrobe): static
+    {
+        $this->wardrobe = $wardrobe;
+
+        return $this;
+    }
+
+    public function getRarety(): ?string
+    {
+        return $this->rarety;
+    }
+
+    public function setRarety(string $rarety): static
+    {
+        $this->rarety = $rarety;
+
+        return $this;
+    }
+
 }

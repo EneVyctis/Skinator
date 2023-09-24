@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\WardrobeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WardrobeRepository::class)]
@@ -13,30 +15,20 @@ class Wardrobe
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?bool $isPublic = null;
+    #[ORM\OneToMany(mappedBy: 'wardrobe', targetEntity: skin::class)]
+    private Collection $skin;
+
+    public function __construct()
+    {
+        $this->skin = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function getDescription(): ?string
@@ -44,21 +36,39 @@ class Wardrobe
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function isIsPublic(): ?bool
+    /**
+     * @return Collection<int, skin>
+     */
+    public function getSkin(): Collection
     {
-        return $this->isPublic;
+        return $this->skin;
     }
 
-    public function setIsPublic(bool $isPublic): static
+    public function addSkin(skin $skin): static
     {
-        $this->isPublic = $isPublic;
+        if (!$this->skin->contains($skin)) {
+            $this->skin->add($skin);
+            $skin->setWardrobe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSkin(skin $skin): static
+    {
+        if ($this->skin->removeElement($skin)) {
+            // set the owning side to null (unless already changed)
+            if ($skin->getWardrobe() === $this) {
+                $skin->setWardrobe(null);
+            }
+        }
 
         return $this;
     }
