@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Skin;
 use App\Repository\WardrobeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
