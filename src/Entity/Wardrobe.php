@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Member;
 use App\Entity\Skin;
 use App\Repository\WardrobeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -24,6 +25,10 @@ class Wardrobe
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    #[ORM\ManyToOne(inversedBy: 'wardrobe')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Member $owner = null;
 
     public function __construct()
     {
@@ -90,6 +95,18 @@ class Wardrobe
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getOwner(): ?Member
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?Member $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }

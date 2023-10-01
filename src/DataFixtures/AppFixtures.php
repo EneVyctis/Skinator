@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Wardrobe;
 use App\Entity\Skin;
+use App\Entity\Member;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -12,21 +13,42 @@ class AppFixtures extends Fixture
      //reference names for wardrobe
      private const JONATHAN_WARDROBE = "jonathan_s_wardrobe";
      private const MICHEL_WARDROBE = "michel_s_wardrobe";
- 
+    //reference names for members
+    private const JONATHAN = "jonathan";
+    private const MICHEL = "michel";
+
      private static function wardrobeDataGenerator()
      {
-         yield ["Jonathan's wardrobe", self::JONATHAN_WARDROBE];
-         yield ["Michel's wardrobe", self::MICHEL_WARDROBE];
+         yield ["Jonathan's wardrobe", self::JONATHAN_WARDROBE,self::JONATHAN, "My little inventory <3"];
+         yield ["Michel's wardrobe", self::MICHEL_WARDROBE, self::MICHEL, "Da Collection"];
+     }
+
+     private static function memberDataGenerator(){
+        yield ["Jonathan", self::JONATHAN];
+        yield["Michel", self::MICHEL];
      }
 
     public function load(ObjectManager $manager): void
     {
         $inventoryRepo = $manager->getRepository(Wardrobe::class);
+        $memberRepo = $manager->getRepository(Member::class);
 
-        foreach (self::wardrobeDataGenerator() as [$name, $wardrobeReference] ) {
+        foreach (self::memberDataGenerator() as [$name, $memberReference]){
+            $member = new Member();
+            $member->setName($name);
+            $manager->persist($member);
+            $manager->flush();
+
+            $this->addReference($memberReference, $member);
+        }
+        foreach (self::wardrobeDataGenerator() as [$name, $wardrobeReference, $memberReference, $description] ) {
+            $member = $this->getReference($memberReference);
             $wardrobe = new Wardrobe();
             $wardrobe->setName($name);
+            $wardrobe->setDescription($description);
+            $member->addWardrobe($wardrobe);
             $manager->persist($wardrobe);
+            $manager->persist($member);
             $manager->flush();
 
             // Once the Wardrobe instance has been saved to DB
