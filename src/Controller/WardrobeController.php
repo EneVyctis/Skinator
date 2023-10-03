@@ -19,30 +19,6 @@ class WardrobeController extends AbstractController
         ]);
     }
 
-    /* List all Wardrobes */
-
-    #[Route('/wardrobe/list', name: 'wardrobe_list', methods: ['GET'])]
-    public function listAction(WardrobeRepository $wardrobeRepository)  
-    {
-            $htmlpage = '<!DOCTYPE html>
-    <html>
-            <head>
-                <meta charset="UTF-8">
-                <title>wardrobe list!</title>
-            </head>
-            <body>
-                <h1>wardrobe list</h1>  
-                <p>Here all wardrobes</p>
-            </body>
-    </html>';
-
-        return new Response(
-            $htmlpage,
-            Response::HTTP_OK,
-            array('content-type' => 'text/html')
-        );
-    }
-
     /**
      * List all wardrobe entities.
      */
