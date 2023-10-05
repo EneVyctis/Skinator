@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+      <h1>wardrobe</h1>
+
+         {% dump wardrobe %}
+
+      <table class="table">
+          <tbody>
+              <tr>
+                  <th>Wardrobe's name</th>
+                  <td>{{ wardrobe.name }}</td>
+              </tr>
+              <tr>
+                    <th>Description</th>
+                    <td>{{ wardrobe.description}}
+              </tr>
+              <tr>
+                  <th>Owner</th>
+                  <td>{{ wardrobe.owner }}</td>
+              </tr>
+          </tbody>
+      </table>
+
+      <a href="{{ path('wardrobe_index') }}">back to list</a>
+
+  {% endblock %} {# body #}

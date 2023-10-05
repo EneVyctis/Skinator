@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wardrobes list{% endblock %}
+
+{% block body %}
+        <h1><U>Wardrobes list</U></h1>
+        <p>Here is a list of all wardrobes:</p>
+        <ul>
+            {% for wardrobe in wardrobes %}
+            <li><a href='{{ path("wardrobe_show", {"id" : wardrobe.id}) }}'>{{ wardrobe.name }}</a></li>
+            {% endfor %}
+        </ul>
+{% endblock %}
