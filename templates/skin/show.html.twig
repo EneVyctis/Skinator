@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Skin details{% endblock %}
+
+{% block body %}
+    <h1>{{ skin.name }}</h1>
+
+    {% dump skin %}
+
+    <table class$"table">
+        <tbody>
+            <tr>
+                <th>Rarety</th>
+                <td>{{ skin.rarety}}</td>
+            </tr>
+            <tr>
+                <th>From</th>
+                <td>{{ skin.wardrobe }}</th>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('wardrobe_show', {'id' : skin.wardrobe.id})}}">back to list</a>
+            
+{% endblock %}
