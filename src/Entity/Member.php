@@ -22,6 +22,9 @@ class Member
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: wardrobe::class)]
     private Collection $wardrobe;
 
+    #[ORM\ManyToOne(inversedBy: 'creator')]
+    private ?Showcase $showcases = null;
+
     public function __construct()
     {
         $this->wardrobe = new ArrayCollection();
@@ -75,6 +78,18 @@ class Member
                 $wardrobe->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getShowcases(): ?Showcase
+    {
+        return $this->showcases;
+    }
+
+    public function setShowcases(?Showcase $showcases): static
+    {
+        $this->showcases = $showcases;
 
         return $this;
     }

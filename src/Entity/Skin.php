@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SkinRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SkinRepository::class)]
@@ -21,6 +23,14 @@ class Skin
 
     #[ORM\Column(length: 255)]
     private ?string $rarety = null;
+
+    #[ORM\ManyToMany(targetEntity: Showcase::class, mappedBy: 'skins')]
+    private Collection $showcases;
+
+    public function __construct()
+    {
+        $this->showcases = new ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -64,6 +74,33 @@ class Skin
     public function setRarety(string $rarety): static
     {
         $this->rarety = $rarety;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Showcase>
+     */
+    public function getShowcases(): Collection
+    {
+        return $this->showcases;
+    }
+
+    public function addShowcase(Showcase $showcase): static
+    {
+        if (!$this->showcases->contains($showcase)) {
+            $this->showcases->add($showcase);
+            $showcase->addSkin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShowcase(Showcase $showcase): static
+    {
+        if ($this->showcases->removeElement($showcase)) {
+            $showcase->removeSkin($this);
+        }
 
         return $this;
     }
