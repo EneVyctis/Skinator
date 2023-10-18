@@ -9,9 +9,9 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Name</th>
                 <th>Description</th>
                 <th>IsPublic</th>
-                <th>Name</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -19,9 +19,9 @@
         {% for showcase in showcases %}
             <tr>
                 <td>{{ showcase.id }}</td>
+                <td>{{ showcase.name }}</td>
                 <td>{{ showcase.description }}</td>
                 <td>{{ showcase.isPublic ? 'Yes' : 'No' }}</td>
-                <td>{{ showcase.name }}</td>
                 <td>
                     <a href="{{ path('app_showcase_show', {'id': showcase.id}) }}">show</a>
                     <a href="{{ path('app_showcase_edit', {'id': showcase.id}) }}">edit</a>

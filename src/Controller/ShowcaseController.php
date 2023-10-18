@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Showcase;
-use App\Form\Showcase1Type;
+use App\Form\Showcase2Type;
 use App\Repository\ShowcaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +26,7 @@ class ShowcaseController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $showcase = new Showcase();
-        $form = $this->createForm(Showcase1Type::class, $showcase);
+        $form = $this->createForm(Showcase2Type::class, $showcase);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,7 +53,7 @@ class ShowcaseController extends AbstractController
     #[Route('/{id}/edit', name: 'app_showcase_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Showcase $showcase, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(Showcase1Type::class, $showcase);
+        $form = $this->createForm(Showcase2Type::class, $showcase);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

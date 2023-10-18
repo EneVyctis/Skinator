@@ -22,12 +22,13 @@ class Member
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: wardrobe::class)]
     private Collection $wardrobe;
 
-    #[ORM\ManyToOne(inversedBy: 'creator')]
-    private ?Showcase $showcases = null;
+    #[ORM\OneToMany(mappedBy: 'creator', targetEntity: Showcase::class)]
+    private Collection $showcases;
 
     public function __construct()
     {
         $this->wardrobe = new ArrayCollection();
+        $this->showcases = new ArrayCollection();
     }
 
     public function __toString()
@@ -82,14 +83,32 @@ class Member
         return $this;
     }
 
-    public function getShowcases(): ?Showcase
+    /**
+     * @return Collection<int, Showcase>
+     */
+    public function getShowcases(): Collection
     {
         return $this->showcases;
     }
 
-    public function setShowcases(?Showcase $showcases): static
+    public function addShowcase(Showcase $showcase): static
     {
-        $this->showcases = $showcases;
+        if (!$this->showcases->contains($showcase)) {
+            $this->showcases->add($showcase);
+            $showcase->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShowcase(Showcase $showcase): static
+    {
+        if ($this->showcases->removeElement($showcase)) {
+            // set the owning side to null (unless already changed)
+            if ($showcase->getCreator() === $this) {
+                $showcase->setCreator(null);
+            }
+        }
 
         return $this;
     }
