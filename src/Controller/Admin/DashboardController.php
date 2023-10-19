@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Member;
 use App\Entity\Skin;
 use App\Entity\Wardrobe;
+use App\Entity\Showcase;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -35,5 +36,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Wardrobes', 'fas fa-list', Wardrobe::class);
         yield MenuItem::linkToCrud("Skins",'fas fa-list', Skin::class);
         yield MenuItem::linkToCrud("Members",'fas fa-list', Member::class);
+        yield MenuItem::linkToCrud("Showcases",'fas fa-list', Showcase::class);
     }
 }
