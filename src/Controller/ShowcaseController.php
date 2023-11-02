@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Showcase;
+use App\Entity\Skin;
 use App\Form\Showcase2Type;
 use App\Repository\ShowcaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 
 #[Route('/showcase')]
 class ShowcaseController extends AbstractController
@@ -28,6 +30,7 @@ class ShowcaseController extends AbstractController
         $showcase = new Showcase();
         $form = $this->createForm(Showcase2Type::class, $showcase);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($showcase);
@@ -48,7 +51,7 @@ class ShowcaseController extends AbstractController
         return $this->render('showcase/show.html.twig', [
             'showcase' => $showcase,
         ]);
-    }
+    }   
 
     #[Route('/{id}/edit', name: 'app_showcase_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Showcase $showcase, EntityManagerInterface $entityManager): Response
@@ -67,6 +70,21 @@ class ShowcaseController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/{showcase_id}/skin/{skin_id}', methods: ['GET'], name: 'app_showcase_skin_show')]
+   public function skinShow(
+       #[MapEntity(id: 'showcase_id')]
+       Showcase $showcase,
+       #[MapEntity(id: 'skin_id'    )]
+       Skin $skin
+   ): Response
+
+   {
+       return $this->render('showcase/skin_show.html.twig', [
+           'skin' => $skin,
+           'showcase' => $showcase
+       ]);
+   }
 
     #[Route('/{id}', name: 'app_showcase_delete', methods: ['POST'])]
     public function delete(Request $request, Showcase $showcase, EntityManagerInterface $entityManager): Response

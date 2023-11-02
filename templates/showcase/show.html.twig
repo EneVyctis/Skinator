@@ -23,6 +23,16 @@
                 <th>IsPublic</th>
                 <td>{{ showcase.isPublic ? 'Yes' : 'No' }}</td>
             </tr>
+            <tr>
+                <th>Skins</th>
+<ul><td>
+   {% for skin in showcase.skins %}
+<li>
+     <a href="{{ path('app_showcase_skin_show', {'showcase_id': showcase.id, 'skin_id' : skin.id}) }}">{{ skin }}</a>
+</li>
+   {% endfor %}
+</ul></td>
+            </tr>
         </tbody>
     </table>
 

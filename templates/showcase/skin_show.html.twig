@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Showcase{% endblock %}
+
+{% block body %}
+    <h1>Skins</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ skin.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ skin.name }}<td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_showcase_show', { 'id': showcase.id}) }}">back to showcase</a>
+
+{% endblock %}

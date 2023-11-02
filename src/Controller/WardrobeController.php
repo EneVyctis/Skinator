@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Wardrobe;
+use App\Form\WardrobeType;
 use App\Repository\WardrobeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 
 class WardrobeController extends AbstractController
 {
@@ -16,6 +19,26 @@ class WardrobeController extends AbstractController
     {
         return $this->render('wardrobe/index.html.twig', [
             'controller_name' => 'WardrobeController',
+        ]);
+    }
+
+    #[Route('/wardrobe/new', name: 'app_wardrobe_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $wardrobe = new Wardrobe();
+        $form = $this->createForm(WardrobeType::class, $wardrobe);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($wardrobe);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_wardrobe', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('wardrobe/new.html.twig', [
+            'wardrobe' => $wardrobe,
+            'form' => $form,
         ]);
     }
 
