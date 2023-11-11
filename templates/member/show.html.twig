@@ -21,6 +21,7 @@
                 {%for wardrobe in member.wardrobe%}
                 <li><a href="{{ path('wardrobe_show', {'id': wardrobe.id}) }}">{{ wardrobe }}</a></li>
                 {% endfor%}
+                <a href="{{ path('app_wardrobe_new', {'id': member.id}) }}">Create a new wardrobe</a>
                 </td>
             </tr>
         </tbody>

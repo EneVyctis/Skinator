@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Wardrobe;
+use App\Entity\Member;
 use App\Form\WardrobeType;
 use App\Repository\WardrobeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,10 +23,11 @@ class WardrobeController extends AbstractController
         ]);
     }
 
-    #[Route('/wardrobe/new', name: 'app_wardrobe_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/wardrobe/new/{id}', name: 'app_wardrobe_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, Member $member): Response
     {
         $wardrobe = new Wardrobe();
+        $wardrobe->setOwner($member);
         $form = $this->createForm(WardrobeType::class, $wardrobe);
         $form->handleRequest($request);
 
