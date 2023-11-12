@@ -20,9 +20,18 @@
                 <td>
                 {%for wardrobe in member.wardrobe%}
                 <li><a href="{{ path('wardrobe_show', {'id': wardrobe.id}) }}">{{ wardrobe }}</a></li>
-                {% endfor%}
+                {% endfor %}
                 <a href="{{ path('app_wardrobe_new', {'id': member.id}) }}">Create a new wardrobe</a>
                 </td>
+            </tr>
+            <tr>
+            <th>Showcases</th>
+            <td>
+            {% for showcase in member.showcases %}
+            <li><a href="{{ path('app_showcase_show', {'id' : showcase.id}) }}">{{ showcase }}</a></li>
+            {% endfor %}
+            <a href="{{ path('app_showcase_new', {'id': member.id}) }}">add a showcase</a>
+            </td>
             </tr>
         </tbody>
     </table>

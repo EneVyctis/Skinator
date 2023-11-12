@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Showcase;
 use App\Entity\Skin;
+use App\Entity\Member;
 use App\Form\Showcase2Type;
 use App\Repository\ShowcaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,14 +21,15 @@ class ShowcaseController extends AbstractController
     public function index(ShowcaseRepository $showcaseRepository): Response
     {
         return $this->render('showcase/index.html.twig', [
-            'showcases' => $showcaseRepository->findAll(),
+            'showcases' => $showcaseRepository->findBy(['isPublic' => true]),
         ]);
     }
 
-    #[Route('/new', name: 'app_showcase_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id}', name: 'app_showcase_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, Member $creator): Response
     {
         $showcase = new Showcase();
+        $showcase->setCreator($creator);
         $form = $this->createForm(Showcase2Type::class, $showcase);
         $form->handleRequest($request);
 
