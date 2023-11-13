@@ -32,6 +32,7 @@ class SkinController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($skin);
             $entityManager->flush();    
+            $this->addFlash('message', 'Bien ajouté');
 
             return $this->redirectToRoute('app_member_index');
         }

@@ -37,7 +37,7 @@ class ShowcaseController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($showcase);
             $entityManager->flush();
-
+            $this->addFlash('message', 'Bien ajouté');
             return $this->redirectToRoute('app_showcase_index', [], Response::HTTP_SEE_OTHER);
         }
 
