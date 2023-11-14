@@ -50,6 +50,9 @@ class ShowcaseController extends AbstractController
     #[Route('/{id}', name: 'app_showcase_show', methods: ['GET'])]
     public function show(Showcase $showcase): Response
     {
+        if(! $showcase->isIsPublic() && !($this->isGranted('ROLE_ADMIN'))) {
+            throw $this->createAccessDeniedException("You cannot access the requested ressource!");
+        }
         return $this->render('showcase/show.html.twig', [
             'showcase' => $showcase,
         ]);
@@ -86,11 +89,7 @@ class ShowcaseController extends AbstractController
         throw $this->createNotFoundException("Couldn't find such a skin in this showcase!");
 }
 
-if(! $showcase->isIsPublic()) {
-        throw $this->createAccessDeniedException("You cannot access the requested ressource!");
-}
-
-return $this->render('showcase/skin_show.html.twig', [
+    return $this->render('showcase/skin_show.html.twig', [
         'skin' => $skin,
         'showcase' => $showcase
   ]);
