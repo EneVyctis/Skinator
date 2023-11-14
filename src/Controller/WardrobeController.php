@@ -12,10 +12,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[Route('/wardrobe')]
 class WardrobeController extends AbstractController
 {
-    #[Route('/wardrobe', name: 'app_wardrobe')]
+    #[Route('/', name: 'app_wardrobe')]
     public function index(): Response
     {
         return $this->render('wardrobe/index.html.twig', [
@@ -23,7 +25,7 @@ class WardrobeController extends AbstractController
         ]);
     }
 
-    #[Route('/wardrobe/new/{id}', name: 'app_wardrobe_new', methods: ['GET', 'POST'])]
+    #[Route('/new/{id}', name: 'app_wardrobe_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Member $member): Response
     {
         $wardrobe = new Wardrobe();
@@ -48,7 +50,7 @@ class WardrobeController extends AbstractController
      * List all wardrobe entities.
      */
 
-    #[Route('wardrobe/list', name: 'wardrobe_list', methods: ['GET'])]
+    #[Route('/list', name: 'wardrobe_list', methods: ['GET'])]
     #[Route('/index', name: 'wardrobe_index', methods: ['GET'])]
     public function listWardrobes(ManagerRegistry $doctrine)
     {
@@ -63,6 +65,7 @@ class WardrobeController extends AbstractController
      * Finds and displays a todo entity.
      */
     #[Route('/{id}', name: 'wardrobe_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function showAction(Wardrobe $wardrobe): Response
     {
         return $this->render('wardrobe/showWardrobe.html.twig', [ 'wardrobe' => $wardrobe]);

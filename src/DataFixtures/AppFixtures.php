@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Wardrobe;
 use App\Entity\Skin;
+use App\Entity\Showcase;
 use App\Entity\Member;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -16,6 +17,9 @@ class AppFixtures extends Fixture
     //reference names for members
     private const JONATHAN = "jonathan";
     private const MICHEL = "michel";
+    //reference names for showcases
+    private const MYSTAND = "my stands";
+    private const BIGBOX = "bigbox";
 
      private static function wardrobeDataGenerator()
      {
@@ -27,6 +31,13 @@ class AppFixtures extends Fixture
         yield ["Jonathan", self::JONATHAN];
         yield["Michel", self::MICHEL];
      }
+
+     private static function showcasesDataGenerator()
+     {
+        yield[self::MYSTAND,"My stands", self::JONATHAN,"mudamudamuda",true];
+        yield[self::BIGBOX,"Bigbox",self::MICHEL,"Do not look",false];
+     }
+
 
     public function load(ObjectManager $manager): void
     {
@@ -58,31 +69,56 @@ class AppFixtures extends Fixture
         }
         // $product = new Product();
         // $manager->persist($product);
+        $this-> loadShowcases($manager);
         $this -> loadSkins($manager);
 
     }
     
     private function loadSkins(ObjectManager $manager)
     {
-        foreach (self::getSkinData() as [$wardrobeReference,$name, $rarety]) {
+        foreach (self::getSkinData() as [$wardrobeReference,$showcaseReference,$name, $rarety]) {
             $wardrobe = $this->getReference($wardrobeReference);
             $skin = new Skin();
             $skin->setName($name);
             $skin->setRarety($rarety);
             $wardrobe->addSkin($skin);
+            if($showcaseReference != null){
+                $showcase = $this->getReference($showcaseReference);
+                $showcase->addSkin($skin);
+                $skin->addShowcase($showcase);
+                $manager->persist($showcase);
+            }
             $manager->persist($skin);
             $manager->persist($wardrobe);
         }
         $manager->flush();
     }
+
+    private function loadShowcases(ObjectManager $manager)
+    {   
+        foreach(self::showcasesDataGenerator() as [$showcaseReference,$name,$creatorReference,$description,$isPublic]){
+            $creator = $this->getReference($creatorReference);
+            $showcase = new Showcase();
+            $showcase->setName($name);
+            $showcase->setDescription($description);
+            $showcase->setCreator($creator);
+            $showcase->setIsPublic($isPublic);
+            $manager->persist($showcase);
+            $manager->persist($creator);
+            $manager->flush();
+
+            $this->addReference($showcaseReference,$showcase);
+
+        }
+    }
     
     private function getSkinData()
     {
         // Skin = [inventory ref, name, rarety];
-        yield [self::JONATHAN_WARDROBE,'Supreme Dragon', "Legendary"];
-        yield [self::MICHEL_WARDROBE,'LittleMan', "Epic"];
-        yield [self::JONATHAN_WARDROBE,'SpeedWagon',  "Rare"];
-        yield [self::JONATHAN_WARDROBE,'The World', "Unique"];
+        yield [self::JONATHAN_WARDROBE,null,'Supreme Dragon', "Legendary"];
+        yield [self::MICHEL_WARDROBE,self::BIGBOX,'LittleMan', "Epic"];
+        yield [self::JONATHAN_WARDROBE,self::MYSTAND,'SpeedWagon',  "Rare"];
+        yield [self::JONATHAN_WARDROBE,self::MYSTAND,'The World', "Unique"];
         
     }
 }
