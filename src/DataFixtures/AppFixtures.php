@@ -6,10 +6,15 @@ use App\Entity\Wardrobe;
 use App\Entity\Skin;
 use App\Entity\Showcase;
 use App\Entity\Member;
+use App\Entity\User;
+use App\DataFixtures\UserFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class AppFixtures extends Fixture
+
+
+class AppFixtures extends Fixture implements DependentFixtureInterface
 {
      //reference names for wardrobe
      private const JONATHAN_WARDROBE = "jonathan_s_wardrobe";
@@ -21,6 +26,14 @@ class AppFixtures extends Fixture
     private const MYSTAND = "my stands";
     private const BIGBOX = "bigbox";
 
+    public function getDependencies()
+        {
+                return [
+                        UserFixtures::class,
+                ];
+        }
+
+
      private static function wardrobeDataGenerator()
      {
          yield ["Jonathan's wardrobe", self::JONATHAN_WARDROBE,self::JONATHAN, "My little inventory <3"];
@@ -28,8 +41,8 @@ class AppFixtures extends Fixture
      }
 
      private static function memberDataGenerator(){
-        yield ["Jonathan", self::JONATHAN];
-        yield["Michel", self::MICHEL];
+        yield ["Jonathan", self::JONATHAN,"jonathan@localhost"];
+        yield["Michel", self::MICHEL,"michel@localhost"];
      }
 
      private static function showcasesDataGenerator()
@@ -41,11 +54,16 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $inventoryRepo = $manager->getRepository(Wardrobe::class);
+        $inventoryRepo = $manager->getRepository(Wardrobe::class);  
         $memberRepo = $manager->getRepository(Member::class);
 
-        foreach (self::memberDataGenerator() as [$name, $memberReference]){
+        foreach (self::memberDataGenerator() as [$name, $memberReference,$useremail]){
             $member = new Member();
+            if ($useremail) {
+                $user = $manager->getRepository(User::class)->findOneByEmail($useremail);
+                $member->setUser($user);
+
+        }
             $member->setName($name);
             $manager->persist($member);
             $manager->flush();
@@ -85,8 +103,6 @@ class AppFixtures extends Fixture
             if($showcaseReference != null){
                 $showcase = $this->getReference($showcaseReference);
                 $showcase->addSkin($skin);
-                $skin->addShowcase($showcase);
-                $manager->persist($showcase);
             }
             $manager->persist($skin);
             $manager->persist($wardrobe);
