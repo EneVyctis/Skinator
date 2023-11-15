@@ -17,16 +17,19 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class SkinController extends AbstractController
 {
     #[Route('skin/{id}', name: 'skin_show', requirements: ['id' => '\d+'], methods: ['GET'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function show(Skin $skin): Response
     {
         return $this->render('skin/show.html.twig', [ 'skin' => $skin]);
     }   
 
     #[Route('skin/new/{wardrobe_id}', name: 'app_skin_new', methods: ['GET', 'POST'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function new(Request $request, EntityManagerInterface $entityManager, #[MapEntity(id : 'wardrobe_id')] Wardrobe $wardrobe): Response
     {
+        $hasAccess = ($this->getUser()->getMember() == $wardrobe->getOwner());
+        if(! $hasAccess){
+            throw $this->createAccessDeniedException("Don't mind other's people business");
+        }
+        else{
         $skin = new Skin();
         $skin->setWardrobe($wardrobe);
         $form = $this->createForm(SkinType::class, $skin);
@@ -44,5 +47,6 @@ class SkinController extends AbstractController
             'skin'=> $skin,
             'form'=> $form,
         ]);
+    }
     }
 }

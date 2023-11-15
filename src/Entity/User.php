@@ -30,6 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Member $member = null;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -67,6 +68,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
+    }
+
+    public function isAdmin(){
+        for( $i=0; $i<count($this->roles); $i++){
+                if($this->roles[$i] == 'ROLE_ADMIN'){
+                    return true;
+                }
+        }
+        return false;
     }
 
     public function setRoles(array $roles): static

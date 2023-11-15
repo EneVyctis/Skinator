@@ -27,6 +27,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
     //reference names for showcases
     private const MYSTAND = "my stands";
     private const BIGBOX = "bigbox";
+    private const SHOWMEYOURMOVES = "showmeyourmoves";
 
     public function getDependencies()
         {
@@ -53,6 +54,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
      {
         yield[self::MYSTAND,"My stands", self::JONATHAN,"mudamudamuda",true];
         yield[self::BIGBOX,"Bigbox",self::MICHEL,"Do not look",false];
+        yield[self::SHOWMEYOURMOVES,"Show me your moves",self::MICHEL,"Love music",true];
      }
 
 
@@ -139,6 +141,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         yield [self::MICHEL_WARDROBE,self::BIGBOX,'LittleMan', "Epic"];
         yield [self::JONATHAN_WARDROBE,self::MYSTAND,'SpeedWagon',  "Rare"];
         yield [self::JONATHAN_WARDROBE,self::MYSTAND,'The World', "Unique"];
-        
+        yield [self::MICHEL_WARDROBE, self::SHOWMEYOURMOVES,'HarpeMonica', "Unique"];
+        yield [self::MICHEL_WARDROBE, self::SHOWMEYOURMOVES,'Capo Era', "Common"];
     }
 }

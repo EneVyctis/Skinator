@@ -18,6 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class WardrobeController extends AbstractController
 {
+    /*
     #[Route('/', name: 'app_wardrobe')]
     public function index(): Response
     {
@@ -25,10 +26,14 @@ class WardrobeController extends AbstractController
             'controller_name' => 'WardrobeController',
         ]);
     }
-
+    */
     #[Route('/new/{id}', name: 'app_wardrobe_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Member $member): Response
     {
+        $hasAccess = ($this->getUser()->getMember() == $member);
+        if(! $hasAccess){
+            throw $this->createAccessDeniedException("Don't mind other's people business");
+        }
         $wardrobe = new Wardrobe();
         $wardrobe->setOwner($member);
         $form = $this->createForm(WardrobeType::class, $wardrobe);
@@ -66,9 +71,12 @@ class WardrobeController extends AbstractController
      * Finds and displays a todo entity.
      */
     #[Route('/{id}', name: 'wardrobe_show', requirements: ['id' => '\d+'], methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
     public function showAction(Wardrobe $wardrobe): Response
     {
+        $hasAccess = ($this->getUser()->getMember() == $wardrobe->getOwner() || $this->isGranted('ROLE_ADMIN'));
+        if(! $hasAccess){
+            throw $this->createAccessDeniedException("Don't mind other's people business");
+        }
         return $this->render('wardrobe/showWardrobe.html.twig', [ 'wardrobe' => $wardrobe]);
     }
 }

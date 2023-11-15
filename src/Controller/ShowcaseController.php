@@ -30,6 +30,10 @@ class ShowcaseController extends AbstractController
     #[Route('/new/{id}', name: 'app_showcase_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Member $creator): Response
     {
+        $hasAccess = ($this->getUser()->getMember() == $creator);
+        if(! $hasAccess){
+            throw $this->createAccessDeniedException("Don't mind other's people business");
+        }
         $showcase = new Showcase();
         $showcase->setCreator($creator);
         $form = $this->createForm(Showcase2Type::class, $showcase);
@@ -58,6 +62,7 @@ class ShowcaseController extends AbstractController
         }
         return $this->render('showcase/show.html.twig', [
             'showcase' => $showcase,
+            'user' => $this->getUser()
         ]);
     }   
 
@@ -100,7 +105,7 @@ class ShowcaseController extends AbstractController
 
     return $this->render('showcase/skin_show.html.twig', [
         'skin' => $skin,
-        'showcase' => $showcase
+        'showcase' => $showcase,
   ]);
    }
 

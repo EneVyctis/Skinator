@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Member;
+use App\Entity\User; 
 use App\Controller\Wardrobe;
 use App\Repository\MemberRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,6 +28,7 @@ class MemberController extends AbstractController
     {
         return $this->render('member/show.html.twig', [
             'member' => $member,
+            'user' => $this->getUser(),
         ]);
     }
 }
