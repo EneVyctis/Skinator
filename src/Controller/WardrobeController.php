@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/wardrobe')]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class WardrobeController extends AbstractController
 {
     #[Route('/', name: 'app_wardrobe')]

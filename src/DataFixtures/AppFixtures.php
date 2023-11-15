@@ -22,6 +22,8 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
     //reference names for members
     private const JONATHAN = "jonathan";
     private const MICHEL = "michel";
+    private const USER = "user";
+    private const ADMIN = "admin";
     //reference names for showcases
     private const MYSTAND = "my stands";
     private const BIGBOX = "bigbox";
@@ -43,6 +45,8 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
      private static function memberDataGenerator(){
         yield ["Jonathan", self::JONATHAN,"jonathan@localhost"];
         yield["Michel", self::MICHEL,"michel@localhost"];
+        yield["User", self::USER,"user"];
+        yield["Admin",self::ADMIN,"admin"];
      }
 
      private static function showcasesDataGenerator()

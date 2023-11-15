@@ -13,11 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/showcase')]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class ShowcaseController extends AbstractController
 {
-    #[Route('/', name: 'app_showcase_index', methods: ['GET'])]
+    #[Route('/', name: 'app_showcase_index', methods: ['GET'])] 
     public function index(ShowcaseRepository $showcaseRepository): Response
     {
         return $this->render('showcase/index.html.twig', [
@@ -50,8 +52,9 @@ class ShowcaseController extends AbstractController
     #[Route('/{id}', name: 'app_showcase_show', methods: ['GET'])]
     public function show(Showcase $showcase): Response
     {
-        if(! $showcase->isIsPublic() && !($this->isGranted('ROLE_ADMIN'))) {
-            throw $this->createAccessDeniedException("You cannot access the requested ressource!");
+        $hasAccess = $this->isGranted('ROLE_ADMIN') || ($this->getUser()->getMember() == $showcase->getCreator()) || ($showcase->isisPublic());
+        if(! $hasAccess) {
+        throw $this->createAccessDeniedException("Private showcase, acces denied !");
         }
         return $this->render('showcase/show.html.twig', [
             'showcase' => $showcase,
@@ -60,20 +63,26 @@ class ShowcaseController extends AbstractController
 
     #[Route('/{id}/edit', name: 'app_showcase_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Showcase $showcase, EntityManagerInterface $entityManager): Response
-    {
+    {   
+        $hasAccess = ($this->getUser()->getMember() == $showcase->getCreator());
+        if(! $hasAccess){
+            throw $this->createAccessDeniedException("Don't mind other's people business");
+        }
         $form = $this->createForm(Showcase2Type::class, $showcase);
         $form->handleRequest($request);
 
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
             return $this->redirectToRoute('app_showcase_index', [], Response::HTTP_SEE_OTHER);
         }
-
+        
         return $this->render('showcase/edit.html.twig', [
             'showcase' => $showcase,
             'form' => $form,
         ]);
+        
     }
 
     #[Route('/{showcase_id}/skin/{skin_id}', methods: ['GET'], name: 'app_showcase_skin_show')]
