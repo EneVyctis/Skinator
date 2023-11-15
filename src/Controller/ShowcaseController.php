@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Showcase;
-use App\Entity\Skin;
+use App\Entity\Weapon;
 use App\Entity\Member;
 use App\Form\Showcase2Type;
 use App\Repository\ShowcaseRepository;
@@ -16,7 +16,6 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/showcase')]
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class ShowcaseController extends AbstractController
 {
     #[Route('/', name: 'app_showcase_index', methods: ['GET'])] 
@@ -54,19 +53,21 @@ class ShowcaseController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_showcase_show', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function show(Showcase $showcase): Response
     {
-        $hasAccess = $this->isGranted('ROLE_ADMIN') || ($this->getUser()->getMember() == $showcase->getCreator()) || ($showcase->isisPublic());
+        $hasAccess = ($showcase->isisPublic()) || $this->isGranted('ROLE_ADMIN') || ($this->getUser()->getMember() == $showcase->getCreator());
         if(! $hasAccess) {
         throw $this->createAccessDeniedException("Private showcase, acces denied !");
         }
         return $this->render('showcase/show.html.twig', [
             'showcase' => $showcase,
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
         ]);
     }   
 
     #[Route('/{id}/edit', name: 'app_showcase_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(Request $request, Showcase $showcase, EntityManagerInterface $entityManager): Response
     {   
         $hasAccess = ($this->getUser()->getMember() == $showcase->getCreator());
@@ -90,21 +91,21 @@ class ShowcaseController extends AbstractController
         
     }
 
-    #[Route('/{showcase_id}/skin/{skin_id}', methods: ['GET'], name: 'app_showcase_skin_show')]
-   public function skinShow(
+    #[Route('/{showcase_id}/weapon/{weapon_id}', methods: ['GET'], name: 'app_showcase_weapon_show')]
+   public function weaponShow(
        #[MapEntity(id: 'showcase_id')]
        Showcase $showcase,
-       #[MapEntity(id: 'skin_id'    )]
-       Skin $skin
+       #[MapEntity(id: 'weapon_id'    )]
+       Weapon $weapon
    ): Response
 
    {
-    if(! $showcase->getSkins()->contains($skin)) {
-        throw $this->createNotFoundException("Couldn't find such a skin in this showcase!");
+    if(! $showcase->getWeapons()->contains($weapon)) {
+        throw $this->createNotFoundException("Couldn't find such a weapon in this showcase!");
 }
 
-    return $this->render('showcase/skin_show.html.twig', [
-        'skin' => $skin,
+    return $this->render('showcase/weapon_show.html.twig', [
+        'weapon' => $weapon,
         'showcase' => $showcase,
   ]);
    }

@@ -2,13 +2,13 @@
 
 namespace App\Form;
 
-use App\Entity\Skin;
+use App\Entity\Weapon;
 use App\Entity\Wardrobe;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SkinType extends AbstractType
+class WeaponType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -24,7 +24,7 @@ class SkinType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Skin::class,
+            'data_class' => Weapon::class,
         ]);
     }
 }

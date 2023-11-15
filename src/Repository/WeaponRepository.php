@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\Skin;
+use App\Entity\Weapon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Skin>
+ * @extends ServiceEntityRepository<Weapon>
  *
- * @method Skin|null find($id, $lockMode = null, $lockVersion = null)
- * @method Skin|null findOneBy(array $criteria, array $orderBy = null)
- * @method Skin[]    findAll()
- * @method Skin[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Weapon|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Weapon|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Weapon[]    findAll()
+ * @method Weapon[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SkinRepository extends ServiceEntityRepository
+class WeaponRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Skin::class);
+        parent::__construct($registry, Weapon::class);
     }
 
 //    /**
-//     * @return Skin[] Returns an array of Skin objects
+//     * @return Weapon[] Returns an array of Weapon objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class SkinRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Skin
+//    public function findOneBySomeField($value): ?Weapon
 //    {
 //        return $this->createQueryBuilder('s')
 //            ->andWhere('s.exampleField = :val')

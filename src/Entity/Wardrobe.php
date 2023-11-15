@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Member;
-use App\Entity\Skin;
+use App\Entity\Weapon;
 use App\Repository\WardrobeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,8 +20,8 @@ class Wardrobe
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'wardrobe', targetEntity: skin::class)]
-    private Collection $skin;
+    #[ORM\OneToMany(mappedBy: 'wardrobe', targetEntity: weapon::class)]
+    private Collection $weapon;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -32,7 +32,7 @@ class Wardrobe
 
     public function __construct()
     {
-        $this->skin = new ArrayCollection();
+        $this->weapon = new ArrayCollection();
     }
 
     public function __toString()
@@ -58,29 +58,29 @@ class Wardrobe
     }
 
     /**
-     * @return Collection<int, skin>
+     * @return Collection<int, weapon>
      */
-    public function getSkin(): Collection
+    public function getWeapon(): Collection
     {
-        return $this->skin;
+        return $this->weapon;
     }
 
-    public function addSkin(skin $skin): static
+    public function addWeapon(weapon $weapon): static
     {
-        if (!$this->skin->contains($skin)) {
-            $this->skin->add($skin);
-            $skin->setWardrobe($this);
+        if (!$this->weapon->contains($weapon)) {
+            $this->weapon->add($weapon);
+            $weapon->setWardrobe($this);
         }
 
         return $this;
     }
 
-    public function removeSkin(skin $skin): static
+    public function removeWeapon(weapon $weapon): static
     {
-        if ($this->skin->removeElement($skin)) {
+        if ($this->weapon->removeElement($weapon)) {
             // set the owning side to null (unless already changed)
-            if ($skin->getWardrobe() === $this) {
-                $skin->setWardrobe(null);
+            if ($weapon->getWardrobe() === $this) {
+                $weapon->setWardrobe(null);
             }
         }
 

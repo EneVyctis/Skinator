@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Skin{% endblock %}
+{% block title %}New Weapon{% endblock %}
 
 {% block body %}
-    <h1>Add new Skin</h1>
+    <h1>Add new Weapon</h1>
 
-    {{ include('skin/_form.html.twig') }}
+    {{ include('weapon/_form.html.twig') }}
 
     <a href="{{ path('app_member_index') }}">return</a>
 {% endblock %}

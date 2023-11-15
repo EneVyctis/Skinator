@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\SkinRepository;
+use App\Repository\WeaponRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SkinRepository::class)]
-class Skin
+#[ORM\Entity(repositoryClass: WeaponRepository::class)]
+class Weapon
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,13 +18,13 @@ class Skin
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'skin')]
+    #[ORM\ManyToOne(inversedBy: 'weapon')]
     private ?Wardrobe $wardrobe = null;
 
     #[ORM\Column(length: 255)]
     private ?string $rarety = null;
 
-    #[ORM\ManyToMany(targetEntity: Showcase::class, mappedBy: 'skins')]
+    #[ORM\ManyToMany(targetEntity: Showcase::class, mappedBy: 'weapons')]
     private Collection $showcases;
 
     public function __construct()
@@ -90,7 +90,7 @@ class Skin
     {
         if (!$this->showcases->contains($showcase)) {
             $this->showcases->add($showcase);
-            $showcase->addSkin($this);
+            $showcase->addWeapon($this);
         }
 
         return $this;
@@ -99,7 +99,7 @@ class Skin
     public function removeShowcase(Showcase $showcase): static
     {
         if ($this->showcases->removeElement($showcase)) {
-            $showcase->removeSkin($this);
+            $showcase->removeWeapon($this);
         }
 
         return $this;

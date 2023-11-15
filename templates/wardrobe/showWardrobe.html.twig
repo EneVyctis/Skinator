@@ -17,16 +17,16 @@
                   <td>{{ wardrobe.owner }}</td>
               </tr>
               <tr>
-                <th>Skins</th>
+                <th>Weapons</th>
                 <td>
                     <ul>
-                {% for skin in wardrobe.skin %}
+                {% for weapon in wardrobe.weapon %}
                         <li>
-                            <a href="{{path('skin_show', {'id' : skin.id}) }}">{{ skin }}</a>
+                            <a href="{{path('weapon_show', {'id' : weapon.id}) }}">{{ weapon }}</a>
                         </li>
                 {% endfor %} {# [inventaire].[objets] #}
                     </ul>
-                    <a href="{{ path('app_skin_new', {'wardrobe_id': wardrobe.id}) }}">add new skin</a>
+                    <a href="{{ path('app_weapon_new', {'wardrobe_id': wardrobe.id}) }}">add new weapon</a>
             </td>
             </tr>
           </tbody>

@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Skin;
+use App\Entity\Weapon;
 use App\Entity\Wardrobe;
-use App\Form\SkinType;
+use App\Form\WeaponType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,15 +14,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class SkinController extends AbstractController
+class WeaponController extends AbstractController
 {
-    #[Route('skin/{id}', name: 'skin_show', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function show(Skin $skin): Response
+    #[Route('weapon/{id}', name: 'weapon_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function show(Weapon $weapon): Response
     {
-        return $this->render('skin/show.html.twig', [ 'skin' => $skin]);
+        return $this->render('weapon/show.html.twig', [ 'weapon' => $weapon]);
     }   
 
-    #[Route('skin/new/{wardrobe_id}', name: 'app_skin_new', methods: ['GET', 'POST'])]
+    #[Route('weapon/new/{wardrobe_id}', name: 'app_weapon_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, #[MapEntity(id : 'wardrobe_id')] Wardrobe $wardrobe): Response
     {
         $hasAccess = ($this->getUser()->getMember() == $wardrobe->getOwner());
@@ -30,21 +30,21 @@ class SkinController extends AbstractController
             throw $this->createAccessDeniedException("Don't mind other's people business");
         }
         else{
-        $skin = new Skin();
-        $skin->setWardrobe($wardrobe);
-        $form = $this->createForm(SkinType::class, $skin);
+        $weapon = new Weapon();
+        $weapon->setWardrobe($wardrobe);
+        $form = $this->createForm(WeaponType::class, $weapon);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($skin);
+            $entityManager->persist($weapon);
             $entityManager->flush();    
             $this->addFlash('message', 'Bien ajouté');
 
             return $this->redirectToRoute('app_member_index');
         }
 
-        return $this->render('skin/new.html.twig', [
-            'skin'=> $skin,
+        return $this->render('weapon/new.html.twig', [
+            'weapon'=> $weapon,
             'form'=> $form,
         ]);
     }

@@ -24,18 +24,17 @@
                 <td>{{ showcase.isPublic ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
-                <th>Skins</th>
+                <th>Weapons</th>
 <ul><td>
-   {% for skin in showcase.skins %}
+   {% for weapon in showcase.weapons %}
 <li>
-     <a href="{{ path('app_showcase_skin_show', {'showcase_id': showcase.id, 'skin_id' : skin.id}) }}">{{ skin }}</a>
+     <a href="{{ path('app_showcase_weapon_show', {'showcase_id': showcase.id, 'weapon_id' : weapon.id}) }}">{{ weapon }}</a>
 </li>
    {% endfor %}
 </ul></td>
             </tr>
         </tbody>
     </table>
-
     <a href="{{ path('app_showcase_edit', {'id': showcase.id}) }}">edit</a></br></br>
     <a href="{{ path('app_member_index') }}">Member list</a></br>
     <a href="{{ path('app_showcase_index') }}">Showcase list</a></br>

@@ -27,12 +27,12 @@ class Showcase
     #[ORM\ManyToOne(inversedBy: 'showcases')]
     private ?Member $creator = null;
 
-    #[ORM\ManyToMany(targetEntity: Skin::class, inversedBy: 'showcases')]
-    private Collection $skins;
+    #[ORM\ManyToMany(targetEntity: Weapon::class, inversedBy: 'showcases')]
+    private Collection $weapons;
 
     public function __construct()
     {
-        $this->skins = new ArrayCollection();
+        $this->weapons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,25 +94,25 @@ class Showcase
     }
 
     /**
-     * @return Collection<int, Skin>
+     * @return Collection<int, Weapon>
      */
-    public function getSkins(): Collection
+    public function getWeapons(): Collection
     {
-        return $this->skins;
+        return $this->weapons;
     }
 
-    public function addSkin(Skin $skin): static
+    public function addWeapon(Weapon $weapon): static
     {
-        if (!$this->skins->contains($skin)) {
-            $this->skins->add($skin);
+        if (!$this->weapons->contains($weapon)) {
+            $this->weapons->add($weapon);
         }
 
         return $this;
     }
 
-    public function removeSkin(Skin $skin): static
+    public function removeWeapon(Weapon $weapon): static
     {
-        $this->skins->removeElement($skin);
+        $this->weapons->removeElement($weapon);
 
         return $this;
     }

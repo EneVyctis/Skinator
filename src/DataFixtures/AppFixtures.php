@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Wardrobe;
-use App\Entity\Skin;
+use App\Entity\Weapon;
 use App\Entity\Showcase;
 use App\Entity\Member;
 use App\Entity\User;
@@ -94,23 +94,23 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         // $product = new Product();
         // $manager->persist($product);
         $this-> loadShowcases($manager);
-        $this -> loadSkins($manager);
+        $this -> loadWeapons($manager);
 
     }
     
-    private function loadSkins(ObjectManager $manager)
+    private function loadWeapons(ObjectManager $manager)
     {
-        foreach (self::getSkinData() as [$wardrobeReference,$showcaseReference,$name, $rarety]) {
+        foreach (self::getWeaponData() as [$wardrobeReference,$showcaseReference,$name, $rarety]) {
             $wardrobe = $this->getReference($wardrobeReference);
-            $skin = new Skin();
-            $skin->setName($name);
-            $skin->setRarety($rarety);
-            $wardrobe->addSkin($skin);
+            $weapon = new Weapon();
+            $weapon->setName($name);
+            $weapon->setRarety($rarety);
+            $wardrobe->addWeapon($weapon);
             if($showcaseReference != null){
                 $showcase = $this->getReference($showcaseReference);
-                $showcase->addSkin($skin);
+                $showcase->addWeapon($weapon);
             }
-            $manager->persist($skin);
+            $manager->persist($weapon);
             $manager->persist($wardrobe);
         }
         $manager->flush();
@@ -134,9 +134,9 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         }
     }
     
-    private function getSkinData()
+    private function getWeaponData()
     {
-        // Skin = [inventory ref, name, rarety];
+        // Weapon = [inventory ref, name, rarety];
         yield [self::JONATHAN_WARDROBE,null,'Supreme Dragon', "Legendary"];
         yield [self::MICHEL_WARDROBE,self::BIGBOX,'LittleMan', "Epic"];
         yield [self::JONATHAN_WARDROBE,self::MYSTAND,'SpeedWagon',  "Rare"];

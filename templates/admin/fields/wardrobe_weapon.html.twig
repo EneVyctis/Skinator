@@ -1,14 +1,14 @@
 {# source: https://stackoverflow.com/a/65082524/1814910 #}
 <ul>
-    {% for skin in field.value %}
+    {% for weapon in field.value %}
       {%- set url = ea_url()
-        .setController('App\\Controller\\Admin\\SkinCrudController')
+        .setController('App\\Controller\\Admin\\WeaponCrudController')
         .setAction('detail')
-        .setEntityId(skin.id)
+        .setEntityId(weapon.id)
       -%}
       <li>
           <a href="{{ url }}">
-            {{ skin }}
+            {{ weapon }}
           </a>
       </li>
     {% else %}
