@@ -51,23 +51,23 @@ Les **weapons** possèdent:
 
 Pour les membres/users, 4 sont chargés pas les données de test :
 
-**possède les droits user**
-email: jonathan@localhost
-mdp :  jonathan
-**Jonathan** n'en possède qu'une seule nommée "My stands"
+**possède les droits user**  
+email: jonathan@localhost  
+mdp :  jonathan  
+**Jonathan** n'en possède qu'une seule nommée "My stands"  
 
-email: michel@localhost
-mdp :  michel
-**Michel** possède deux showcases, une publique nommée "Show me your moves" et une privée nommée "Bigbox".
+email: michel@localhost  
+mdp :  michel  
+**Michel** possède deux showcases, une publique nommée "Show me your moves" et une privée nommée "Bigbox".  
 
-email: user
-mdp :  user
-**User** ne possède rien
+email: user  
+mdp :  user  
+**User** ne possède rien  
 
-**possède les droits admin**
-email: admin
-mdp :  admin
-**Admin** ne possède rien
+**possède les droits admin**  
+email: admin  
+mdp :  admin  
+**Admin** ne possède rien  
 
 ### Important : les différentes limitations mises en place
 
