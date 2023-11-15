@@ -76,6 +76,12 @@ L'administrateur lui,a accès à tout en consultation MAIS ne possède pas les d
 La page membre et les actions "show" sont la porte d'entrée vers toutes les autres consultations. 
 La page "showcases" permet de lister et de consulter toutes les [galeries] publiques. 
 
+Pour tester rapidement, prendre le profil **admin** et tester la consultation des inventaires/galeries/weapons. 
+Ensuite, prendre **Jonathan**, constater que les inventaires de Michel n'apparaissent pas sur la page membre (normal). Tester eventuellement les galeries.
+Ensuite aller sur la page de Jonathan et tester les formulaires (ajout d'inventaire, ajout de galerie, création d'un objet...). 
+Enfin (pas forcément nécessaire), se connecter sur "user" pour voir ce que voit un profil vierge. 
+
+
 1)
 
 La consultation des objets se fait via les **showcases** publiques, il suffit de cliquer sur la **weapon** voulu pour être dirigé sur la page de celle ci. 
