@@ -4,6 +4,15 @@ Notice that this little web app is a 25 hours student project. The main objectiv
 Hence, I do **not** garantee the security of the app.
 
 
+## Lancer le projet
+
+cd /tmp
+unzip the .zip file
+cd into the file
+- rm -fr composer.lock symfony.lock vendor/ var/cache
+- symfony composer install
+- symfony server:start
+
 
 ### Weaponator (un jour ce nom changera...)
 
